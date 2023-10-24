@@ -39,6 +39,8 @@ zarf package deploy --confirm zarf-package-postgres-operator-*.tar.zst
 zarf package deploy oci://ghcr.io/defenseunicorns/packages/postgres-operator:0.0.1-amd64 --oci-concurrency=15
 ```
 
+After deployment you can [create a postgres cluster following the zalando docs](https://postgres-operator.readthedocs.io/en/latest/quickstart/#create-a-postgres-cluster) and use it. Ideally this would be done via a zarf package - you can see an example zarf postgres package [here](./.github/zarf-runner/bob-the-builder/postgres/zarf.yaml).
+
 ## Remove
 
 ```console

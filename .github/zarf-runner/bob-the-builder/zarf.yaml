@@ -14,7 +14,6 @@ components:
           - description: Load UDS CLI
             cmd: |
               [ -f ../build/uds ] && [ "$(../build/uds version)" == "###ZARF_PKG_TMPL_UDS_CLI_VERSION###" ] && exit 0
-
               ARCH=$(uname -m)
               [ "$ARCH" = "x86_64" ] && ARCH="amd64"
               echo $ARCH
