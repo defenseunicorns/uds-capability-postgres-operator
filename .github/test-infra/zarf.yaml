@@ -34,7 +34,6 @@ components:
           - description: Deploy a k3d cluster with istio and install the package
             cmd: |
               ./build/uds deploy oci://ghcr.io/zachariahmiller/k3d-common-istio:0.1.0-amd64 --confirm
-              ./zarf init --confirm
               ./zarf package deploy build/zarf-package-postgres-operator-* --confirm
 
   - name: test
