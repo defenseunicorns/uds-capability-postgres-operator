@@ -25,6 +25,6 @@ components:
           - description: Build the postgres-operator zarf package
             cmd: "./zarf package create ../../../ -o ../build --confirm --skip-sbom"
           - description: Build the postgres zarf package
-            cmd: "./zarf package create ../postgres -o ../build --confirm --skip-sbom"
+            cmd: "./zarf package create postgres -o ../build --confirm --skip-sbom"
           - description: Build the db-seed zarf package
-            cmd: "./zarf package create ../db-seed -o ../build --confirm --skip-sbom"
+            cmd: "./zarf package create db-seed -o ../build --confirm --skip-sbom"
