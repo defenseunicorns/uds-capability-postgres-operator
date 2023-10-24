@@ -1,0 +1,18 @@
+kind: ZarfPackageConfig
+metadata:
+  name: bernard-bentley
+  url: https://welovebob.com/characters/mr_bentley.htm
+  image: https://welovebob.com/Images/characters/mr_bentley.jpg
+  description: "A zarf package to test things"
+
+components:
+  - name: test
+    required: true
+    actions:
+      onCreate:
+        before:
+          - description: Test deployment of a postgres instance
+            cmd: "./zarf package deploy ..//build/zarf-package-postgres-test-* --confirm"
+        after:
+          - description: Test DB seed (postgres connection)
+            cmd: "./zarf package deploy ..//build/zarf-package-db-seed-* --confirm"
