@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/defenseunicorns/zarf/main/zarf.schema.json
+kind: ZarfPackageConfig
+metadata:
+  name: db-seed
+  description: "A test job to seed the database"
+
+components:
+  - name: db-seed
+    required: true
+    manifests:
+      - name: db-seed
+        files:
+          - db-seed.yaml
+    images:
+      - cgr.dev/chainguard/postgres
+    actions:
+      onDeploy:
+        after:
+          - wait:
+              cluster:
+                kind: Job
+                name: db-seed-job
+                namespace: acid
+                condition: "'{.status.succeeded}'=1"

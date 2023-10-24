@@ -1,0 +1,48 @@
+kind: ZarfPackageConfig
+metadata:
+  name: farmer-pickles # https://btb.fandom.com/wiki/Farmer_Pickles
+
+components:
+  - name: build
+    required: true
+    actions:
+      onCreate:
+        before:
+          - description: Load UDS CLI
+            cmd: |
+              [ -f build/uds ] && [ "$(./build/uds version)" == "###ZARF_PKG_TMPL_UDS_CLI_VERSION###" ] && exit 0
+
+              ARCH=$(uname -m)
+              [ "$ARCH" = "x86_64" ] && ARCH="amd64"
+              echo $ARCH
+              # Download the uds-cli binary
+              mkdir -p build
+              curl -fL https://github.com/defenseunicorns/uds-cli/releases/download/###ZARF_PKG_TMPL_UDS_CLI_VERSION###/uds-cli_###ZARF_PKG_TMPL_UDS_CLI_VERSION###_$(uname -s)_${ARCH} -o build/uds
+              chmod +x build/uds
+          - description: Build the postgres-operator zarf package
+            cmd: "./zarf package create ../../ -o build --confirm --skip-sbom"
+          - description: Build the postgres zarf package
+            cmd: "./zarf package create postgres -o build --confirm --skip-sbom"
+          - description: Build the db-seed zarf package
+            cmd: "./zarf package create db-seed -o build --confirm --skip-sbom"
+
+  - name: deploy
+    required: true
+    actions:
+      onCreate:
+        before:
+          - description: Deploy a k3d cluster with istio and install the package
+            cmd: |
+              ./build/uds deploy oci://ghcr.io/zachariahmiller/k3d-common-istio:0.1.0-arm64 --confirm
+              ./zarf package deploy build/zarf-package-postgres-operator-* --confirm
+
+  - name: test
+    required: true
+    actions:
+      onCreate:
+        before:
+          - description: Test deployment of a postgres instance
+            cmd: "./zarf package deploy build/zarf-package-postgres-test-* --confirm"
+        after:
+          - description: Test DB seed (postgres connection)
+            cmd: "./zarf package deploy build/zarf-package-db-seed-* --confirm"

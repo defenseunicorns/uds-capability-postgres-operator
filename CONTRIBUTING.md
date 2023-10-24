@@ -1,4 +1,4 @@
-# Welcome to the [NAME] UDS Capability
+# Welcome to the Postgres Operator UDS Capability
 
 Thank you for your interest in this Defense Unicorns UDS Capability!
 

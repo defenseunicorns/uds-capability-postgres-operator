@@ -1,17 +1,34 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/defenseunicorns/zarf/main/zarf.schema.json
-
 kind: ZarfPackageConfig
 metadata:
-  name: example
-  description: "Example description"
+  name: postgres-operator
+  description: "A deployment of zalando postgres operator"
   # x-release-please-start-version
   version: "0.0.1"
   # x-release-please-end
 
-
 components:
-  - name: test
-    actions:
-      onCreate:
-        after:
-        - cmd: echo "What can Doug do for you?"
+  # CRD lifecycle is managed outside of the main chart to support upgrades
+  - name: crds
+    required: true
+    manifests:
+      - name: crds
+        files:
+          - https://github.com/zalando/postgres-operator/raw/v1.10.1/charts/postgres-operator/crds/operatorconfigurations.yaml
+          - https://github.com/zalando/postgres-operator/raw/v1.10.1/charts/postgres-operator/crds/postgresqls.yaml
+          - https://github.com/zalando/postgres-operator/raw/v1.10.1/charts/postgres-operator/crds/postgresteams.yaml
+  - name: postgres-operator
+    required: true
+    charts:
+      # renovate: datasource=helm
+      - name: postgres-operator
+        version: v1.10.1
+        namespace: postgres-operator
+        url: https://opensource.zalando.com/postgres-operator/charts/postgres-operator
+        valuesFiles:
+          - ./values/values.yaml
+    images:
+      - registry1.dso.mil/ironbank/opensource/zalando/postgres-operator:v1.10.1
+      - registry1.dso.mil/ironbank/opensource/zalando/logical-backup:v1.8.2
+      - registry1.dso.mil/ironbank/opensource/zalando/pgbouncer:1.21.0
+      - ghcr.io/zalando/spilo-15:3.0-p1
