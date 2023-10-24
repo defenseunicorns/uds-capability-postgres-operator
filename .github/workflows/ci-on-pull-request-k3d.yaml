@@ -42,14 +42,14 @@ jobs:
       - name: Build
         shell: bash
         run: zarf package create --confirm
-        working-directory: ".github/test-infra/bob-the-builder"
+        working-directory: ".github/zarf-runner/bob-the-builder"
 
       - name: Deploy
         shell: bash
         run: zarf package create --confirm
-        working-directory: ".github/test-infra/farmer-pickles"
+        working-directory: ".github/zarf-runner/farmer-pickles"
 
       - name: Test
         shell: bash
         run: zarf package create --confirm
-        working-directory: ".github/test-infra/bernard-bentley"
+        working-directory: ".github/zarf-runner/bernard-bentley"
