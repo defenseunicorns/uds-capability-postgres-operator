@@ -10,6 +10,7 @@ components:
     manifests:
       - name: postgres
         files:
+          - postgres-svc.yaml
           - postgres-minimal.yaml
     actions:
       onDeploy:

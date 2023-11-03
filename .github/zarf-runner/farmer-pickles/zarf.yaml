@@ -13,7 +13,7 @@ components:
         before:
           - description: Deploy a k3d cluster with istio
             cmd: |
-              ../build/uds deploy oci://ghcr.io/zachariahmiller/k3d-common-istio:0.2.0-amd64 --confirm
+              ../build/uds deploy oci://ghcr.io/zachariahmiller/k3d-common-istio:0.3.0-arm64 --confirm
           - description: Deploy the package
             cmd: |
               ./zarf package deploy ../build/zarf-package-postgres-operator-* --confirm

@@ -21,11 +21,12 @@ spec:
     spec:
       containers:
       - name: db-seed
-        image: cgr.dev/chainguard/postgres
+        image: docker.io/postgres:13
         command:
         - sh
         - -c
-        - psql -h $DB_HOST -U $DB_USER -d $DB_NAME -a -f /seed.sql
+        - psql -h $DB_HOST -U $DB_USER -d $DB_NAME -a -f /seed.sql &&
+        - kill -s TERM $(pidof pilot-agent) # This should really be done via pepr istio termination of sidecar for job
         env:
         - name: DB_USER
           valueFrom:

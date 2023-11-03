@@ -12,7 +12,7 @@ components:
         files:
           - db-seed.yaml
     images:
-      - cgr.dev/chainguard/postgres
+      - docker.io/postgres:13
     actions:
       onDeploy:
         after:
