@@ -26,7 +26,7 @@ spec:
         - sh
         - -c
         - psql -h $DB_HOST -U $DB_USER -d $DB_NAME -a -f /seed.sql &&
-        - kill -s TERM $(pidof pilot-agent) # This should really be done via pepr istio termination of sidecar for job
+        - kill -s TERM $(pidof pilot-agent) # This should really be done via pepr istio termination of sidecar for job - https://github.com/defenseunicorns/uds-core/pull/12
         env:
         - name: DB_USER
           valueFrom:
