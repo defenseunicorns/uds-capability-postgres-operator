@@ -10,22 +10,39 @@
 
 ***
 
-# [CAPABILITY REPOSITORY NAME]
+# UDS Capability Postgres Operator
 
-[Short description]
+This UDS Capability repository contains a deployment of [Zalando Postgres Operator](https://github.com/zalando/postgres-operator) for running production ready postgres instances in a kubernetes cluster.
 
 ## Prerequisites
 
-[Bulleted-list, commands, etc; describing expected versions, deployed software, and other requirements]
+- Zarf is installed locally with a minimum version of v0.30.1
+- Working kube context (kubectl get nodes <-- this command works)
+- Kubernetes cluster has been zarf init-ed
 
 ## Create
 
-[Steps used to build the UDS Capability]
+```console
+zarf package create --confirm
+```
 
 ## Deploy
 
- [Steps used to deploy the UDS Capability]
+```console
+# Modify zarf-config.yaml as needed
+
+# Deploy the zarf package, EITHER the..
+#  locally-created package .zst file
+zarf package deploy --confirm zarf-package-postgres-operator-*.tar.zst
+#  OR a published OCI package (browse release at
+#    https://github.com/defenseunicorns/uds-package-dubbd/pkgs/container/packages%2Fpostgres-operator)
+zarf package deploy oci://ghcr.io/defenseunicorns/packages/postgres-operator:0.0.1-amd64 --oci-concurrency=15
+```
+
+After deployment you can [create a postgres cluster following the zalando docs](https://postgres-operator.readthedocs.io/en/latest/quickstart/#create-a-postgres-cluster) and use it. Ideally this would be done via a zarf package - you can see an example zarf postgres package [here](./.github/zarf-runner/bob-the-builder/postgres/zarf.yaml).
 
 ## Remove
 
-[Steps used to remove the UDS Capability]
+```console
+zarf package remove postgres-operator --confirm
+```
